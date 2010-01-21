@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+	<assembly>
+		<name>Avencia.Open.Reprojection</name>
+	</assembly>
+	<members>
+		<member name="N:Avencia.Utilities.GeoUtilities">
+			<summary>
+				An assembly for geographic reprojection utility functions/classes.
+			</summary>
+		</member>
+	</members>
+</doc>
