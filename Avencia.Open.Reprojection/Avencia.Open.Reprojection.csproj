@@ -1,19 +1,19 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F9FCE3C5-B8BC-416D-9B8B-342575CAF6D5}</ProjectGuid>
+    <ProjectGuid>{155C7090-D562-4093-91B2-69C86795A0F4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Avencia.Open.Reprojection</RootNamespace>
     <AssemblyName>Avencia.Open.Reprojection</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,16 +23,15 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Avencia.Open.Reprojection.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Avencia.Open.Reprojection.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Avencia.Open.Reprojection.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GeoAPI, Version=1.1.0.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
@@ -57,7 +56,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -66,12 +64,30 @@
     <Compile Include="Reprojector.cs" />
     <Compile Include="Tests\ReprojectorTests.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Content Include="Avencia.Open.Reprojection.NamespaceDocs.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Avencia.Open.Common\Avencia.Open.Common.csproj">
+      <Project>{ADBFE412-4F06-454A-AAF5-E93719E3B1FD}</Project>
+      <Name>Avencia.Open.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-  </Target>
-  -->
+  </Target> -->
+  <PropertyGroup>
+    <PostBuildEvent>
+echo Copying geoapi license file...
+copy /Y "$(ProjectDir)\lib\geoapi\*.txt" "$(TargetDir)"
+echo Copying nettopologysuite license file...
+copy /Y "$(ProjectDir)\lib\nettopologysuite\*.txt" "$(TargetDir)"
+echo Copying projnet license file...
+copy /Y "$(ProjectDir)\lib\projnet\*.txt" "$(TargetDir)"
+	</PostBuildEvent>
+  </PropertyGroup>
 </Project>
