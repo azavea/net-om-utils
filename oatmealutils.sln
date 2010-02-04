@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avencia.Open.Common", "Avencia.Open.Common\Avencia.Open.Common.csproj", "{ADBFE412-4F06-454A-AAF5-E93719E3B1FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avencia.Open.Reprojection", "Avencia.Open.Reprojection\Avencia.Open.Reprojection.csproj", "{F9FCE3C5-B8BC-416D-9B8B-342575CAF6D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avencia.Open.Reprojection", "Avencia.Open.Reprojection\Avencia.Open.Reprojection.csproj", "{155C7090-D562-4093-91B2-69C86795A0F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,10 @@ Global
 		{ADBFE412-4F06-454A-AAF5-E93719E3B1FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADBFE412-4F06-454A-AAF5-E93719E3B1FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADBFE412-4F06-454A-AAF5-E93719E3B1FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9FCE3C5-B8BC-416D-9B8B-342575CAF6D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9FCE3C5-B8BC-416D-9B8B-342575CAF6D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9FCE3C5-B8BC-416D-9B8B-342575CAF6D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9FCE3C5-B8BC-416D-9B8B-342575CAF6D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{155C7090-D562-4093-91B2-69C86795A0F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{155C7090-D562-4093-91B2-69C86795A0F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{155C7090-D562-4093-91B2-69C86795A0F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{155C7090-D562-4093-91B2-69C86795A0F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
