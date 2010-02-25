@@ -65,6 +65,9 @@
     <Compile Include="Tests\ReprojectorTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Avencia.Open.Reprojection.LICENSE.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Avencia.Open.Reprojection.NamespaceDocs.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -81,13 +84,17 @@
   <Target Name="AfterBuild">
   </Target> -->
   <PropertyGroup>
-    <PostBuildEvent>
-echo Copying geoapi license file...
+    <PostBuildEvent>echo Copying geoapi license file...
 copy /Y "$(ProjectDir)\lib\geoapi\*.txt" "$(TargetDir)"
 echo Copying nettopologysuite license file...
 copy /Y "$(ProjectDir)\lib\nettopologysuite\*.txt" "$(TargetDir)"
 echo Copying projnet license file...
 copy /Y "$(ProjectDir)\lib\projnet\*.txt" "$(TargetDir)"
-	</PostBuildEvent>
+
+echo Copying log4net license file...
+copy /Y "$(ProjectDir)\..\Avencia.Open.Common\lib\log4net\*.txt" "$(TargetDir)"
+echo Copying nunit license file...
+copy /Y "$(ProjectDir)\..\Avencia.Open.Common\lib\nunit\*.html" "$(TargetDir)"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
