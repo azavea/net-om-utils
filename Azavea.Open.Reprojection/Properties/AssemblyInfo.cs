@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Azavea.Utilities.GeoUtilities")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Azavea Incorporated")]
+[assembly: AssemblyCompany("Azavea Inc.")]
 [assembly: AssemblyProduct("Azavea.Utilities.GeoUtilities")]
 [assembly: AssemblyCopyright("Copyright ©  2008")]
 [assembly: AssemblyTrademark("")]
