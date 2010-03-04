@@ -120,6 +120,20 @@ namespace Azavea.Open.Common
         }
 
         /// <summary>
+        /// Allows you to explicitly remove a config from the cache, for example during
+        /// unit testing, or any time when you know the config file in the cache is
+        /// no longer valid.
+        /// </summary>
+        /// <param name="appName">Identifies which config file we want.</param>
+        public static void ClearConfigCache(string appName)
+        {
+            lock (_configCache)
+            {
+                _configCache.Remove(appName);
+            }
+        }
+
+        /// <summary>
         /// Constructs a config class given the "appName", or the key to look up
         /// in the app/web.config's "appSettings" section.  The value for that key
         /// is the path to the config file we're interested in.
