@@ -634,15 +634,30 @@ namespace Azavea.Open.Common
         /// <param name="component">The component or section of the config file, used to
         ///                         locate the parameter.</param>
         /// <param name="parameter">The name of the config parameter.</param>
-        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
         /// <returns>The parameter from the config, or the default.</returns>
-        public string GetParameterWithDefault(string component, string parameter, string def)
+        [Obsolete("Will be removed after 1 June 2010.  Has been renamed to GetParameter(component, parameter, defaultValue).")]
+        public string GetParameterWithDefault(string component, string parameter, string defaultValue)
+        {
+            return GetParameter(component, parameter, defaultValue);
+        }
+
+        /// <summary>
+        /// Similar to GetParameter, except rather than throwing an exception if a parameter
+        /// doesn't exist, returns the default value.
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
+        /// <returns>The parameter from the config, or the default.</returns>
+        public string GetParameter(string component, string parameter, string defaultValue)
         {
             if (ParameterExists(component, parameter))
             {
                 return GetParameter(component, parameter);
             }
-            return def;
+            return defaultValue;
         }
         /// <summary>
         /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
@@ -650,15 +665,15 @@ namespace Azavea.Open.Common
         /// <param name="component">The component or section of the config file, used to
         ///                         locate the parameter.</param>
         /// <param name="parameter">The name of the config parameter.</param>
-        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
         /// <returns>The parameter from the config, or the default.</returns>
-        public int GetParameterWithDefault(string component, string parameter, int def)
+        public int GetParameterAsInt(string component, string parameter, int defaultValue)
         {
             if (ParameterExists(component, parameter))
             {
                 return GetParameterAsInt(component, parameter);
             }
-            return def;
+            return defaultValue;
         }
         /// <summary>
         /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
@@ -666,15 +681,15 @@ namespace Azavea.Open.Common
         /// <param name="component">The component or section of the config file, used to
         ///                         locate the parameter.</param>
         /// <param name="parameter">The name of the config parameter.</param>
-        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
         /// <returns>The parameter from the config, or the default.</returns>
-        public int? GetParameterWithDefault(string component, string parameter, int? def)
+        public int? GetParameterAsInt(string component, string parameter, int? defaultValue)
         {
             if (ParameterExists(component, parameter))
             {
                 return GetParameterAsInt(component, parameter);
             }
-            return def;
+            return defaultValue;
         }
         /// <summary>
         /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
@@ -682,15 +697,15 @@ namespace Azavea.Open.Common
         /// <param name="component">The component or section of the config file, used to
         ///                         locate the parameter.</param>
         /// <param name="parameter">The name of the config parameter.</param>
-        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
         /// <returns>The parameter from the config, or the default.</returns>
-        public bool GetParameterWithDefault(string component, string parameter, bool def)
+        public bool GetParameterAsBool(string component, string parameter, bool defaultValue)
         {
             if (ParameterExists(component, parameter))
             {
                 return GetParameterAsBool(component, parameter);
             }
-            return def;
+            return defaultValue;
         }
         /// <summary>
         /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
@@ -698,15 +713,15 @@ namespace Azavea.Open.Common
         /// <param name="component">The component or section of the config file, used to
         ///                         locate the parameter.</param>
         /// <param name="parameter">The name of the config parameter.</param>
-        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
         /// <returns>The parameter from the config, or the default.</returns>
-        public bool? GetParameterWithDefault(string component, string parameter, bool? def)
+        public bool? GetParameterAsBool(string component, string parameter, bool? defaultValue)
         {
             if (ParameterExists(component, parameter))
             {
                 return GetParameterAsBool(component, parameter);
             }
-            return def;
+            return defaultValue;
         }
         /// <summary>
         /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
@@ -714,15 +729,15 @@ namespace Azavea.Open.Common
         /// <param name="component">The component or section of the config file, used to
         ///                         locate the parameter.</param>
         /// <param name="parameter">The name of the config parameter.</param>
-        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
         /// <returns>The parameter from the config, or the default.</returns>
-        public double GetParameterWithDefault(string component, string parameter, double def)
+        public double GetParameterAsDouble(string component, string parameter, double defaultValue)
         {
             if (ParameterExists(component, parameter))
             {
                 return GetParameterAsDouble(component, parameter);
             }
-            return def;
+            return defaultValue;
         }
         /// <summary>
         /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
@@ -730,15 +745,15 @@ namespace Azavea.Open.Common
         /// <param name="component">The component or section of the config file, used to
         ///                         locate the parameter.</param>
         /// <param name="parameter">The name of the config parameter.</param>
-        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
         /// <returns>The parameter from the config, or the default.</returns>
-        public double? GetParameterWithDefault(string component, string parameter, double? def)
+        public double? GetParameterAsDouble(string component, string parameter, double? defaultValue)
         {
             if (ParameterExists(component, parameter))
             {
                 return GetParameterAsDouble(component, parameter);
             }
-            return def;
+            return defaultValue;
         }
 
         /// <summary>
