@@ -481,5 +481,69 @@ namespace Azavea.Open.Common.Tests
             
             Assert.AreEqual("\"Non-Attribute Value\"", cfg.GetParameter("NonAttr", "AParam"));
         }
+        ///<exclude/>
+        [Test]
+        public void TestParseInt()
+        {
+            Config cfg = new Config(VALID_APPNAME);
+
+            Assert.AreEqual(1, cfg.GetParameterAsInt("TypedData", "Int1"));
+            Assert.AreEqual(0, cfg.GetParameterAsInt("TypedData", "Int2"));
+            Assert.AreEqual(-1, cfg.GetParameterAsInt("TypedData", "Int3"));
+            bool threw = false;
+            try
+            {
+                cfg.GetParameterAsInt("TypedData", "CantParse");
+            }
+            catch
+            {
+                threw = true;
+            }
+            Assert.IsTrue(threw, "Failed to throw when parsing invalid input.");
+        }
+        ///<exclude/>
+        [Test]
+        public void TestParseBool()
+        {
+            Config cfg = new Config(VALID_APPNAME);
+
+            Assert.AreEqual(true, cfg.GetParameterAsBool("TypedData", "Bool1"));
+            Assert.AreEqual(false, cfg.GetParameterAsBool("TypedData", "Bool2"));
+            bool threw = false;
+            try
+            {
+                cfg.GetParameterAsBool("TypedData", "CantParse");
+            }
+            catch
+            {
+                threw = true;
+            }
+            Assert.IsTrue(threw, "Failed to throw when parsing invalid input.");
+        }
+        ///<exclude/>
+        [Test]
+        public void TestParseDouble()
+        {
+            Config cfg = new Config(VALID_APPNAME);
+            Assert.AreEqual(0.0, cfg.GetParameterAsDouble("TypedData", "Double1"));
+            Assert.AreEqual(-123.456, cfg.GetParameterAsDouble("TypedData", "Double2"));
+            Assert.AreEqual(Double.NaN, cfg.GetParameterAsDouble("TypedData", "Double3"));
+
+            // Ints should parse as doubles...
+            Assert.AreEqual(1.0, cfg.GetParameterAsDouble("TypedData", "Int1"));
+            Assert.AreEqual(0.0, cfg.GetParameterAsDouble("TypedData", "Int2"));
+            Assert.AreEqual(-1.0, cfg.GetParameterAsDouble("TypedData", "Int3"));
+
+            bool threw = false;
+            try
+            {
+                cfg.GetParameterAsDouble("TypedData", "CantParse");
+            }
+            catch
+            {
+                threw = true;
+            }
+            Assert.IsTrue(threw, "Failed to throw when parsing invalid input.");
+        }
     }
 }

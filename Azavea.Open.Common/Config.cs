@@ -551,6 +551,64 @@ namespace Azavea.Open.Common
                 return "never gets here";
             }
         }
+
+        /// <summary>
+        /// Similar to GetParameter, but converts the type for you (if possible, throws if not).
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <returns>The value for the parameter.  Throws an exception if unable to convert
+        ///          to an integer.</returns>
+        public int GetParameterAsInt(string component, string parameter)
+        {
+            int retVal;
+            if (!int.TryParse(GetParameter(component, parameter), out retVal))
+            {
+                throw new LoggingException("Component " + component + ", parameter " +
+                    parameter + ", value was unable to be converted to an integer.");
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// Similar to GetParameter, but converts the type for you (if possible, throws if not).
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <returns>The value for the parameter.  Throws an exception if unable to convert
+        ///          to a double.</returns>
+        public double GetParameterAsDouble(string component, string parameter)
+        {
+            double retVal;
+            if (!double.TryParse(GetParameter(component, parameter), out retVal))
+            {
+                throw new LoggingException("Component " + component + ", parameter " +
+                    parameter + ", value was unable to be converted to a double.");
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// Similar to GetParameter, but converts the type for you (if possible, throws if not).
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <returns>The value for the parameter.  Throws an exception if unable to convert
+        ///          to a boolean.</returns>
+        public bool GetParameterAsBool(string component, string parameter)
+        {
+            bool retVal;
+            if (!bool.TryParse(GetParameter(component, parameter), out retVal))
+            {
+                throw new LoggingException("Component " + component + ", parameter " +
+                    parameter + ", value was unable to be converted to a boolean.");
+            }
+            return retVal;
+        }
+
         /// <summary>
         /// Similar to the regular GetParameter method, except it will substitute 
         /// environment variables in the values if present.
@@ -583,6 +641,102 @@ namespace Azavea.Open.Common
             if (ParameterExists(component, parameter))
             {
                 return GetParameter(component, parameter);
+            }
+            return def;
+        }
+        /// <summary>
+        /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <returns>The parameter from the config, or the default.</returns>
+        public int GetParameterWithDefault(string component, string parameter, int def)
+        {
+            if (ParameterExists(component, parameter))
+            {
+                return GetParameterAsInt(component, parameter);
+            }
+            return def;
+        }
+        /// <summary>
+        /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <returns>The parameter from the config, or the default.</returns>
+        public int? GetParameterWithDefault(string component, string parameter, int? def)
+        {
+            if (ParameterExists(component, parameter))
+            {
+                return GetParameterAsInt(component, parameter);
+            }
+            return def;
+        }
+        /// <summary>
+        /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <returns>The parameter from the config, or the default.</returns>
+        public bool GetParameterWithDefault(string component, string parameter, bool def)
+        {
+            if (ParameterExists(component, parameter))
+            {
+                return GetParameterAsBool(component, parameter);
+            }
+            return def;
+        }
+        /// <summary>
+        /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <returns>The parameter from the config, or the default.</returns>
+        public bool? GetParameterWithDefault(string component, string parameter, bool? def)
+        {
+            if (ParameterExists(component, parameter))
+            {
+                return GetParameterAsBool(component, parameter);
+            }
+            return def;
+        }
+        /// <summary>
+        /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <returns>The parameter from the config, or the default.</returns>
+        public double GetParameterWithDefault(string component, string parameter, double def)
+        {
+            if (ParameterExists(component, parameter))
+            {
+                return GetParameterAsDouble(component, parameter);
+            }
+            return def;
+        }
+        /// <summary>
+        /// Similar to GetParameterWithDefault, except converts the type of the value (if present).
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <param name="parameter">The name of the config parameter.</param>
+        /// <param name="def">Value to return if the parameter doesn't exist.</param>
+        /// <returns>The parameter from the config, or the default.</returns>
+        public double? GetParameterWithDefault(string component, string parameter, double? def)
+        {
+            if (ParameterExists(component, parameter))
+            {
+                return GetParameterAsDouble(component, parameter);
             }
             return def;
         }
