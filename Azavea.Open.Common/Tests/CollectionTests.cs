@@ -42,26 +42,26 @@ namespace Azavea.Open.Common.Tests
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 dict.Add(new KeyValuePair<string, string>(null, "two"));
-            }, new[] { "null", "key", "two" });
+            }, new string[] { "null", "key", "two" });
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 // ReSharper disable AssignNullToNotNullAttribute
                 // This is sort of the point.
                 dict.Add(null, "two");
                 // ReSharper restore AssignNullToNotNullAttribute
-            }, new[] { "null", "key", "two" });
+            }, new string[] { "null", "key", "two" });
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 dict.Clear();
                 dict.Add(new KeyValuePair<string, string>("one", "two"));
                 dict.Add(new KeyValuePair<string, string>("one", "three"));
-            }, new[] { "one", "two", "three" });
+            }, new string[] { "one", "two", "three" });
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 dict.Clear();
                 dict.Add("one", "two");
                 dict.Add("one", "three");
-            }, new[] { "one", "two", "three" });
+            }, new string[] { "one", "two", "three" });
         }
 
         /// <exclude/>
@@ -71,14 +71,14 @@ namespace Azavea.Open.Common.Tests
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 dict.Contains(new KeyValuePair<string, string>(null, "two"));
-            }, new[] { "null", "key", "two" });
+            }, new string[] { "null", "key", "two" });
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 // ReSharper disable AssignNullToNotNullAttribute
                 // This is sort of the point.
                 dict.ContainsKey(null);
                 // ReSharper restore AssignNullToNotNullAttribute
-            }, new[] { "null", "key" });
+            }, new string[] { "null", "key" });
             AssertDictionaryNoException(delegate(IDictionary<string, string> dict)
             {
                 dict.Contains(new KeyValuePair<string, string>("blah", "two"));
@@ -96,12 +96,12 @@ namespace Azavea.Open.Common.Tests
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 dict.CopyTo(null, 10);
-            }, new[] { "10", "null", "array" });
+            }, new string[] { "10", "null", "array" });
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 KeyValuePair<string,string>[] arr = new KeyValuePair<string, string>[10];
                 dict.CopyTo(arr, -1);
-            }, new[] { "less", "zero", "array", "-1" });
+            }, new string[] { "less", "zero", "array", "-1" });
             AssertDictionaryNoException(delegate(IDictionary<string, string> dict)
             {
                 KeyValuePair<string, string>[] arr = new KeyValuePair<string, string>[10];
@@ -113,7 +113,7 @@ namespace Azavea.Open.Common.Tests
                 KeyValuePair<string, string>[] arr = new KeyValuePair<string, string>[10];
                 dict["one"] = "two";
                 dict.CopyTo(arr, 10);
-            }, new[] { "10", "end", "array" });
+            }, new string[] { "10", "end", "array" });
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 dict.Clear();
@@ -123,7 +123,7 @@ namespace Azavea.Open.Common.Tests
                 dict["four"] = "five";
                 KeyValuePair<string, string>[] arr = new KeyValuePair<string, string>[10];
                 dict.CopyTo(arr, 7);
-            }, new[] { "10", "7", "end", "array", "4" });
+            }, new string[] { "10", "7", "end", "array", "4" });
         }
 
         /// <exclude/>
@@ -133,14 +133,14 @@ namespace Azavea.Open.Common.Tests
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 dict.Remove(new KeyValuePair<string, string>(null, "two"));
-            }, new[] { "null", "key", "two" });
+            }, new string[] { "null", "key", "two" });
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 // ReSharper disable AssignNullToNotNullAttribute
                 // This is sort of the point.
                 dict.Remove(null);
                 // ReSharper restore AssignNullToNotNullAttribute
-            }, new[] { "null", "key" });
+            }, new string[] { "null", "key" });
             AssertDictionaryNoException(delegate(IDictionary<string, string> dict)
             {
                 dict.Clear();
@@ -164,7 +164,7 @@ namespace Azavea.Open.Common.Tests
                 // This is sort of the point.
                 dict.TryGetValue(null, out value);
                 // ReSharper restore AssignNullToNotNullAttribute
-            }, new[] { "null", "key" });
+            }, new string[] { "null", "key" });
             AssertDictionaryNoException(delegate(IDictionary<string, string> dict)
             {
                 dict.Clear();
@@ -186,7 +186,7 @@ namespace Azavea.Open.Common.Tests
                 string x = dict[null];
 #pragma warning restore 168
                 // ReSharper restore AssignNullToNotNullAttribute
-            }, new[] { "null", "key", "get" });
+            }, new string[] { "null", "key", "get" });
             AssertDictionaryException(delegate(IDictionary<string, string> dict)
             {
                 dict.Clear();
@@ -195,7 +195,7 @@ namespace Azavea.Open.Common.Tests
 #pragma warning disable 168
                 string x = dict["one"];
 #pragma warning restore 168
-            }, new[] { "one", "key", "get", "two", "three" });
+            }, new string[] { "one", "key", "get", "two", "three" });
         }
 
         /// <exclude/>
@@ -208,7 +208,7 @@ namespace Azavea.Open.Common.Tests
                 // This is sort of the point.
                 dict[null] = "one";
                 // ReSharper restore AssignNullToNotNullAttribute
-            }, new[] { "null", "key", "set", "one"});
+            }, new string[] { "null", "key", "set", "one"});
             AssertDictionaryNoException(delegate(IDictionary<string, string> dict)
             {
                 dict.Clear();

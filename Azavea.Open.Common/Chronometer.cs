@@ -293,7 +293,7 @@ namespace Azavea.Open.Common
                     else
                     {
                         // Not there yet, so just add the first values.
-                        _operationTotalTimes[originalKey] = new List<long>(new []{duration});
+                        _operationTotalTimes[originalKey] = new List<long>(new long[]{duration});
                     }
                 }
             }
