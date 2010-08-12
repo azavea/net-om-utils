@@ -76,9 +76,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Azavea.Open.Common.NamespaceDocs.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Azavea.Open.Common.LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="lib\log4net\log4net_LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="lib\log4net\log4net_NOTICE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\log4net\log4net_README.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\nunit\nunit.framework_LICENSE.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -92,10 +103,6 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>echo Copying unit test config file...
-copy /Y "$(ProjectDir)\Tests\test.config" "$(TargetPath).config"
-echo Copying log4net license files...
-copy /Y "$(ProjectDir)\lib\log4net\*.txt" "$(TargetDir)"
-echo Copying nunit license file...
-copy /Y "$(ProjectDir)\lib\nunit\*.html" "$(TargetDir)"</PostBuildEvent>
+copy /Y "$(ProjectDir)\Tests\test.config" "$(TargetPath).config"</PostBuildEvent>
   </PropertyGroup>
 </Project>
