@@ -469,6 +469,7 @@ namespace Azavea.Open.Common.Collections
                             msg.Append(", and ")
                                 .Append(_realDict.Count - count)
                                 .Append(" others.");
+                            break;
                         }
                     }
                     throw new KeyNotFoundException(msg.ToString());
