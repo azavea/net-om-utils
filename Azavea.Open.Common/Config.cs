@@ -83,9 +83,15 @@ namespace Azavea.Open.Common
         /// <summary>
         /// This is a Dictionary of the XML contents of each component/section,
         /// keyed by component (component = one section in the config file).
-        /// The values are XML strings.
+        /// The values are XML strings.  This includes the containing "component" tag.
         /// </summary>
-        protected readonly IDictionary<string, string> _xmlByComponent;
+        protected readonly IDictionary<string, string> _outerXmlByComponent;
+        /// <summary>
+        /// This is a Dictionary of the XML contents of each component/section,
+        /// keyed by component (component = one section in the config file).
+        /// The values are XML strings.  This does NOT include the containing "component" tag.
+        /// </summary>
+        protected readonly IDictionary<string, string> _innerXmlByComponent;
 
         /// <summary>
         /// This allows you to avoid reading the same config file over and over again.
@@ -188,6 +194,7 @@ namespace Azavea.Open.Common
             : this(configFileName, appName, configXml, treatMissingFileAsEmpty,
             new CheckedDictionary<string, IDictionary<string, string>>(new CaseInsensitiveStringComparer()),
             new CheckedDictionary<string, IList<KeyValuePair<string, string>>>(new CaseInsensitiveStringComparer()),
+            new CheckedDictionary<string, string>(new CaseInsensitiveStringComparer()),
             new CheckedDictionary<string, string>(new CaseInsensitiveStringComparer())) { }
 
         /// <summary>
@@ -203,17 +210,20 @@ namespace Azavea.Open.Common
         /// <param name="treatMissingFileAsEmpty">If true, a missing config file will not cause an exception.</param>
         /// <param name="paramsByComponent">The dictionary that will hold the parameters keyed by component.</param>
         /// <param name="orderedParamsByComponent">The dictionary that will hold the parameters in order from the file, keyed by component.</param>
-        /// <param name="xmlByComponent">The dictionary that will hold XML chunks from the file, keyed by component.</param>
+        /// <param name="outerXmlByComponent">The dictionary that will hold XML chunks from the file, keyed by component.</param>
+        /// <param name="innerXmlByComponent">The dictionary that will hold XML chunks from the file, keyed by component.</param>
         protected Config(string configFileName, string appName, XmlDocument configXml,
             bool treatMissingFileAsEmpty,
             IDictionary<string, IDictionary<string, string>> paramsByComponent,
             IDictionary<string, IList<KeyValuePair<string, string>>> orderedParamsByComponent,
-            IDictionary<string, string> xmlByComponent)
+            IDictionary<string, string> outerXmlByComponent,
+            IDictionary<string, string> innerXmlByComponent)
         {
             // First populate the attributes.
             _paramsByComponent = paramsByComponent;
             _orderedParamsByComponent = orderedParamsByComponent;
-            _xmlByComponent = xmlByComponent;
+            _outerXmlByComponent = outerXmlByComponent;
+            _innerXmlByComponent = innerXmlByComponent;
 
             if (appName == null)
             {
@@ -328,7 +338,8 @@ namespace Azavea.Open.Common
                     string componentName = node.Attributes["name"].Value;
 
                     // Save the entire XML section for the GetConfigXml method
-                    _xmlByComponent[componentName] = node.OuterXml;
+                    _outerXmlByComponent[componentName] = node.OuterXml;
+                    _innerXmlByComponent[componentName] = node.InnerXml;
 
                     if (_paramsByComponent.ContainsKey(componentName))
                     {
@@ -830,7 +841,8 @@ namespace Azavea.Open.Common
 
         /// <summary>
         /// Gets you the XML section for the component, allowing you to do any special
-        /// parsing that may be necessary.
+        /// parsing that may be necessary.  This includes the "component" tag, and any
+        /// text included in that tag.
         /// </summary>
         /// <param name="component">The component or section of the config file, used to
         ///                         locate the parameter.</param>
@@ -844,7 +856,7 @@ namespace Azavea.Open.Common
             }
 			try
 			{
-			    return _xmlByComponent[component];
+			    return _outerXmlByComponent[component];
 			}
 			catch(Exception ex)
 			{
@@ -854,6 +866,34 @@ namespace Azavea.Open.Common
                 return null;
             }
 		}
+
+        /// <summary>
+        /// Gets you the XML section for the component, allowing you to do any special
+        /// parsing that may be necessary.  This includes ONLY the children of the
+        /// "component" tag, and will not have any text included in that tag.
+        /// </summary>
+        /// <param name="component">The component or section of the config file, used to
+        ///                         locate the parameter.</param>
+        /// <returns>The XML section (exclusive of the "component" tag) for the
+        /// given component.</returns>
+        public virtual string GetConfigInnerXml(string component)
+        {
+            if (component == null)
+            {
+                throw new ArgumentNullException("component", "Component cannot be null.");
+            }
+            try
+            {
+                return _innerXmlByComponent[component];
+            }
+            catch (Exception ex)
+            {
+                ReThrowException("Error while getting config inner XML for component.",
+                    new object[] { ConfigFile, component }, ex);
+                // that throws, but the compiler wants a return statement.
+                return null;
+            }
+        }
 
         /// <summary>
         /// Gets you a Dictionary of all the parameters for the component.
