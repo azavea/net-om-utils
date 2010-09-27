@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -384,6 +385,138 @@ namespace Azavea.Open.Common
             catch (Exception e)
             {
                 throw new LoggingException("Unable to concatenate values, error on element " + count, e);
+            }
+        }
+
+        /// <summary>
+        /// A comparer that sorts strings numerically if possible.  I.E.
+        /// "Jeff1", "Jeff2", and "Jeff10" will be sorted in that order, instead
+        /// of the more typical "Jeff1", "Jeff10", "Jeff2".
+        /// </summary>
+        public class SmartComparer : IComparer<string>, IComparer
+        {
+            /// <summary>
+            /// Regex to separate blocks of digits from blocks of non-digit text.
+            /// </summary>
+            public static readonly Regex NumericSeparatorRegex =
+                new Regex(@"((?:\d|-)?(?:\d|,)+\.?\d*|(?:(?:-?[^\d-]+)+|-))");
+
+            /// <summary>
+            /// The one and only instance of this class.  It is stateless so you
+            /// don't need to instantiate it.
+            /// </summary>
+            public static readonly SmartComparer Instance = new SmartComparer();
+
+            /// <summary>
+            /// Use SmartComparer.Instance instead.
+            /// </summary>
+            protected SmartComparer() { }
+
+            /// <summary>
+            /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
+            /// </summary>
+            /// <returns>
+            /// Value Condition Less than zero <paramref name="x"/> is less than <paramref name="y"/>. Zero <paramref name="x"/> equals <paramref name="y"/>. Greater than zero <paramref name="x"/> is greater than <paramref name="y"/>. 
+            /// </returns>
+            /// <param name="x">The first object to compare. </param><param name="y">The second object to compare. </param><exception cref="T:System.ArgumentException">Neither <paramref name="x"/> nor <paramref name="y"/> implements the <see cref="T:System.IComparable"/> interface.-or- <paramref name="x"/> and <paramref name="y"/> are of different types and neither one can handle comparisons with the other. </exception><filterpriority>2</filterpriority>
+            public int Compare(object x, object y)
+            {
+                // Sort nulls first.
+                if (x == null)
+                {
+                    if (y == null)
+                    {
+                        return 0;
+                    }
+                    return 1;
+                }
+                if (y == null)
+                {
+                    return -1;
+                }
+                if ((x.GetType().Equals(y.GetType())) && (x is IComparable) && (!(x is string)))
+                {
+                    return ((IComparable) x).CompareTo(y);
+                }
+                return SmartCompare(x.ToString(), y.ToString());
+            }
+
+            /// <summary>
+            /// Sorts strings numerically if possible.  I.E.
+            /// "Jeff1", "Jeff2", and "Jeff10" will be sorted in that order, instead
+            /// of the more typical "Jeff1", "Jeff10", "Jeff2".
+            /// </summary>
+            /// <param name="x">First string to compare.</param>
+            /// <param name="y">Second string to compare.</param>
+            /// <returns>
+            /// Value Condition Less than zero <paramref name="x"/> is less than <paramref name="y"/>. Zero <paramref name="x"/> equals <paramref name="y"/>. Greater than zero <paramref name="x"/> is greater than <paramref name="y"/>. 
+            /// </returns>
+            public static int SmartCompare(string x, string y)
+            {
+                MatchCollection xMatches = NumericSeparatorRegex.Matches(x);
+                MatchCollection yMatches = NumericSeparatorRegex.Matches(y);
+                int index = 0;
+                while ((index < xMatches.Count) && (index < yMatches.Count))
+                {
+                    string xStr = xMatches[index].Value;
+                    string yStr = yMatches[index].Value;
+                    double xVal;
+                    double yVal;
+                    int retVal;
+                    if (double.TryParse(xStr, out xVal) && double.TryParse(yStr, out yVal))
+                    {
+                        retVal = xVal.CompareTo(yVal);
+                        if (retVal != 0)
+                        {
+                            return retVal;
+                        }
+                    }
+                    else
+                    {
+                        retVal = xStr.CompareTo(yStr);
+                        if (retVal != 0)
+                        {
+                            return retVal;
+                        }
+                    }
+                    index++;
+                }
+                // Now one of them ran out of matches, so the longer string (the one that still has
+                // matches) comes second.
+                if (xMatches.Count > index)
+                {
+                    return 1;
+                }
+                if (yMatches.Count > index)
+                {
+                    return -1;
+                }
+                return 0;
+            }
+
+            /// <summary>
+            /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
+            /// </summary>
+            /// <returns>
+            /// Value Condition Less than zero<paramref name="x"/> is less than <paramref name="y"/>.Zero<paramref name="x"/> equals <paramref name="y"/>.Greater than zero<paramref name="x"/> is greater than <paramref name="y"/>.
+            /// </returns>
+            /// <param name="x">The first object to compare.</param><param name="y">The second object to compare.</param>
+            public int Compare(string x, string y)
+            {
+                // Sort nulls first.
+                if (x == null)
+                {
+                    if (y == null)
+                    {
+                        return 0;
+                    }
+                    return 1;
+                }
+                if (y == null)
+                {
+                    return -1;
+                }
+                return SmartCompare(x, y);
             }
         }
     }

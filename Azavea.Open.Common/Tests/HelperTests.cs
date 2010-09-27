@@ -22,6 +22,8 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace Azavea.Open.Common.Tests
@@ -300,6 +302,72 @@ namespace Azavea.Open.Common.Tests
         private static void AssertDateTime(string input)
         {
             Assert.IsTrue(StringHelper.IsDateTime(input), "String '" + input + "' is DateTime!");
+        }
+
+        /// <exclude/>
+        [Test]
+        public void TestSmartCompareRegex()
+        {
+            string input = "jeff12.3test98lks-0-jeff-te,st.blah,5,000.2-";
+            string[] expected = {
+                    "jeff",
+                    "12.3",
+                    "test",
+                    "98",
+                    "lks",
+                    "-0",
+                    "-jeff-te,st.blah,",
+                    "5,000.2",
+                    "-"
+                };
+            MatchCollection matches = StringHelper.SmartComparer.NumericSeparatorRegex.Matches(input);
+
+            Assert.AreEqual(expected.Length, matches.Count,
+                "Wrong number of regex matches: " + StringHelper.Join(matches));
+            for (int x = 0; x < expected.Length; x++)
+            {
+                Assert.AreEqual(expected[x], matches[x].Value, "Match " + x + " was incorrect.");
+            }
+        }
+        /// <exclude/>
+        [Test]
+        public void TestSmartCompare()
+        {
+            List<string> strings = new List<string>();
+            strings.Add("Test1");
+            strings.Add("Test01");
+            strings.Add("Test2");
+            strings.Add("Test4");
+            strings.Add("Test20");
+            strings.Add("Test3Z");
+            strings.Add("Test10");
+            strings.Add("Test4");
+            strings.Add("Test3");
+            strings.Add("Test4");
+            strings.Add("Test3.12");
+            strings.Add("Test15");
+            strings.Add("Test3.101");
+            string[] expected = {
+                                    "Test01",
+                                    "Test1",
+                                    "Test2",
+                                    "Test3",
+                                    "Test3Z",
+                                    "Test3.101",
+                                    "Test3.12",
+                                    "Test4",
+                                    "Test4",
+                                    "Test4",
+                                    "Test10",
+                                    "Test15",
+                                    "Test20"
+                                };
+            strings.Sort(StringHelper.SmartComparer.Instance);
+            Assert.AreEqual(expected.Length, strings.Count, "Sorted length didn't match expected, bug in test?");
+            for (int x = 0; x < expected.Length; x++)
+            {
+                Assert.AreEqual(expected[x], strings[x], "Sorted list was incorrect at index " + x);
+            }
         }
     }
 }
