@@ -187,11 +187,18 @@ namespace Azavea.Open.Common
         ///                          identifies the operation.</param>
         public static void BeginTiming(StringBuilder keyBuilder)
         {
-            StringBuilder keyWithThread = _sbCache.Get();
-            keyWithThread.Append(keyBuilder);
-            keyWithThread.Append(Thread.CurrentThread.Name);
-            ReallyBeginTiming(keyWithThread.ToString());
-            _sbCache.Return(keyWithThread);
+            try
+            {
+                StringBuilder keyWithThread = _sbCache.Get();
+                keyWithThread.Append(keyBuilder);
+                keyWithThread.Append(Thread.CurrentThread.Name);
+                ReallyBeginTiming(keyWithThread.ToString());
+                _sbCache.Return(keyWithThread);
+            }
+            catch (Exception e)
+            {
+                _log.Warn("Chronometer failed to begin timing " + keyBuilder, e);
+            }
         }
         /// <summary>
         /// Starts timing the specified named operation.  Each time the same
@@ -202,11 +209,18 @@ namespace Azavea.Open.Common
         /// <param name="key">A string that uniquely identifies the operation.</param>
         public static void BeginTiming(string key)
         {
-            StringBuilder keyWithThread = _sbCache.Get();
-            keyWithThread.Append(key);
-            keyWithThread.Append(Thread.CurrentThread.Name);
-            ReallyBeginTiming(keyWithThread.ToString());
-            _sbCache.Return(keyWithThread);
+            try
+            {
+                StringBuilder keyWithThread = _sbCache.Get();
+                keyWithThread.Append(key);
+                keyWithThread.Append(Thread.CurrentThread.Name);
+                ReallyBeginTiming(keyWithThread.ToString());
+                _sbCache.Return(keyWithThread);
+            }
+            catch (Exception e)
+            {
+                _log.Warn("Chronometer failed to begin timing " + key, e);
+            }
         }
         /// <summary>
         /// Behind the scenes we tack onto the key the name of the thread, in case 
@@ -236,6 +250,11 @@ namespace Azavea.Open.Common
                 keyWithThread.Append(Thread.CurrentThread.Name);
                 return ReallyEndTiming(keyBuilder.ToString(), keyWithThread.ToString());
             }
+            catch (Exception e)
+            {
+                _log.Warn("Chronometer failed to end timing " + keyBuilder, e);
+                return -1;
+            }
             finally
             {
                 _sbCache.Return(keyWithThread);
@@ -254,6 +273,11 @@ namespace Azavea.Open.Common
                 keyWithThread.Append(key);
                 keyWithThread.Append(Thread.CurrentThread.Name);
                 return ReallyEndTiming(key, keyWithThread.ToString());
+            }
+            catch (Exception e)
+            {
+                _log.Warn("Chronometer failed to end timing " + key, e);
+                return -1;
             }
             finally
             {
