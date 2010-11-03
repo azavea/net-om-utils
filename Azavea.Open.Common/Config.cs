@@ -647,21 +647,6 @@ namespace Azavea.Open.Common
         /// <param name="parameter">The name of the config parameter.</param>
         /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
         /// <returns>The parameter from the config, or the default.</returns>
-        [Obsolete("Will be removed after 1 June 2010.  Has been renamed to GetParameter(component, parameter, defaultValue).")]
-        public string GetParameterWithDefault(string component, string parameter, string defaultValue)
-        {
-            return GetParameter(component, parameter, defaultValue);
-        }
-
-        /// <summary>
-        /// Similar to GetParameter, except rather than throwing an exception if a parameter
-        /// doesn't exist, returns the default value.
-        /// </summary>
-        /// <param name="component">The component or section of the config file, used to
-        ///                         locate the parameter.</param>
-        /// <param name="parameter">The name of the config parameter.</param>
-        /// <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
-        /// <returns>The parameter from the config, or the default.</returns>
         public string GetParameter(string component, string parameter, string defaultValue)
         {
             if (ParameterExists(component, parameter))
