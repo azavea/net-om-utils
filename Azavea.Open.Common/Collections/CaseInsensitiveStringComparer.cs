@@ -33,6 +33,13 @@ namespace Azavea.Open.Common.Collections
     public class CaseInsensitiveStringComparer : IEqualityComparer<string>
     {
         /// <summary>
+        /// We save this on construction because apparently calling .Default
+        /// does some real work, it was taking a substantial amount of time
+        /// during performance profiling.  Doing this once produced about
+        /// a 60% reduction in time spent calling Equals(x,y).
+        /// </summary>
+        private readonly CaseInsensitiveComparer _systemComparer = CaseInsensitiveComparer.Default;
+        /// <summary>
         ///                     Determines whether the specified objects are equal.
         /// </summary>
         /// <returns>
@@ -46,7 +53,7 @@ namespace Azavea.Open.Common.Collections
         ///                 </param>
         public bool Equals(string x, string y)
         {
-            return CaseInsensitiveComparer.Default.Compare(x, y) == 0;
+            return _systemComparer.Compare(x, y) == 0;
         }
 
         /// <summary>

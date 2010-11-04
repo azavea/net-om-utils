@@ -443,38 +443,52 @@ namespace Azavea.Open.Common.Collections
         {
             get
             {
-                // ReSharper disable CompareNonConstrainedGenericWithNull
-                // We should be OK comparing the key with null, because we're only
-                // doing it so we can throw an exception if it is null.
-                if (key == null)
-                // ReSharper restore CompareNonConstrainedGenericWithNull
+                // After running this code in a profiler, it was determined that checking if the key
+                // exists roughly doubles the time it takes to call this method.  Since the key not
+                // existing is an exception case anyway, we're instead letting the base class throw,
+                // catching that exception, and rethrowing a better one.  This produced a 46%
+                // reduction in the time spent in this method.
+                try
                 {
-                    throw new ArgumentNullException("key", "Cannot try to get a value for a null key.");
+                    return _realDict[key];
                 }
-                if (!_realDict.ContainsKey(key))
+                catch (Exception e)
                 {
-                    StringBuilder msg = new StringBuilder();
-                    msg.Append("Cannot get key '").Append(key)
-                        .Append("', it is not in this dictionary.  Valid keys: ");
-                    int count = 0;
-                    foreach (K validKey in _realDict.Keys)
+                    // We should be OK comparing the key with null, because we're only
+                    // doing it so we can throw an exception if it is null.
+                    // ReSharper disable CompareNonConstrainedGenericWithNull
+                    // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                    if (key == null)
+                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                        // ReSharper restore CompareNonConstrainedGenericWithNull
                     {
-                        if (count++ != 0)
-                        {
-                            msg.Append(", ");
-                        }
-                        msg.Append("'").Append(validKey).Append("'");
-                        if (count > 20)
-                        {
-                            msg.Append(", and ")
-                                .Append(_realDict.Count - count)
-                                .Append(" others.");
-                            break;
-                        }
+                        throw new ArgumentNullException("key", "Cannot try to get a value for a null key.");
                     }
-                    throw new KeyNotFoundException(msg.ToString());
+                    if (!_realDict.ContainsKey(key))
+                    {
+                        StringBuilder msg = new StringBuilder();
+                        msg.Append("Cannot get key '").Append(key)
+                            .Append("', it is not in this dictionary.  Valid keys: ");
+                        int count = 0;
+                        foreach (K validKey in _realDict.Keys)
+                        {
+                            if (count++ != 0)
+                            {
+                                msg.Append(", ");
+                            }
+                            msg.Append("'").Append(validKey).Append("'");
+                            if (count > 20)
+                            {
+                                msg.Append(", and ")
+                                    .Append(_realDict.Count - count)
+                                    .Append(" others.");
+                                break;
+                            }
+                        }
+                        throw new KeyNotFoundException(msg.ToString());
+                    }
+                    throw new LoggingException("Unknown exception when trying to access key '" + key + "'.", e);
                 }
-                return _realDict[key];
             }
             set
             {
