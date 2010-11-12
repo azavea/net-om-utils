@@ -35,6 +35,8 @@ namespace Azavea.Open.Common.Caching
     /// If you're using filenames as keys and you have a finite set of files, you're fine.
     /// If you're using timestamps as keys and you always use "now", you'll run out of
     /// memory eventually because the old ones don't get cleared.
+    /// 
+    /// This class uses locking to ensure thread-safety.
     /// </summary>
     /// <typeparam name="K">Type of the key.</typeparam>
     /// <typeparam name="T">Type of the data.</typeparam>
